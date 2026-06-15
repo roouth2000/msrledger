@@ -21,18 +21,37 @@ function getJwtSecret() {
 }
 
 /**
- * Middleware to authenticate requests via JWT Bearer Token.
+ * Helper to parse a specific cookie from the Request headers
+ */
+function getCookieToken(req) {
+  if (!req.headers.cookie) return null;
+  const cookieHeader = req.headers.cookie;
+  const parts = cookieHeader.split(';');
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
+    if (part.startsWith('token=')) {
+      return part.substring(6);
+    }
+  }
+  return null;
+}
+
+/**
+ * Middleware to authenticate requests via JWT Bearer Token or Cookie.
  * Enforces expected algorithms to reject the 'none' algorithm attack.
  */
 const authMiddleware = (req, res, next) => {
+  let token = null;
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Access denied. No token provided.' });
+
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  } else {
+    token = getCookieToken(req);
   }
 
-  const token = authHeader.split(' ')[1];
   if (!token) {
-    return res.status(401).json({ error: 'Access denied. Invalid token format.' });
+    return res.status(401).json({ error: 'Access denied. No token provided.' });
   }
 
   try {

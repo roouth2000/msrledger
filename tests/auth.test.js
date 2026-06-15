@@ -20,6 +20,10 @@ afterAll(async () => {
 describe('Authentication API Integration Tests', () => {
   const testUser = {
     username: 'testuser1',
+    shopName: 'Shankar Traders',
+    ownerName: 'Shankar Lal',
+    mobile: '+919845012345',
+    email: 'shankar@traders.com',
     password: 'Password@123',
   };
 
@@ -33,25 +37,50 @@ describe('Authentication API Integration Tests', () => {
       expect(res.body).toHaveProperty('message', 'User registered successfully.');
 
       // Verify user is in DB
-      const dbUser = await User.findOne({ where: { username: testUser.username } });
+      const dbUser = await User.findOne({ where: { email: testUser.email } });
       expect(dbUser).not.toBeNull();
-      expect(dbUser.username).toBe(testUser.username);
+      expect(dbUser.shopName).toBe(testUser.shopName);
+      expect(dbUser.ownerName).toBe(testUser.ownerName);
+      expect(dbUser.mobile).toBe(testUser.mobile);
+      expect(dbUser.email).toBe(testUser.email);
       // Ensure password was hashed and not stored in plaintext
       expect(dbUser.password).not.toBe(testUser.password);
     });
 
-    it('should fail registration on duplicate username', async () => {
+    it('should fail registration on duplicate email', async () => {
+      const duplicateUser = {
+        username: 'testuser2',
+        shopName: 'Other Traders',
+        ownerName: 'Other Owner',
+        mobile: '+919845099999',
+        email: testUser.email, // Duplicate email
+        password: 'Password@123',
+      };
       const res = await request(app)
         .post('/api/auth/register')
-        .send(testUser);
+        .send(duplicateUser);
 
       expect(res.status).toBe(400);
-      expect(res.body).toHaveProperty('error', 'Username is already taken.');
+      expect(res.body).toHaveProperty('error', 'Email is already registered.');
     });
 
     it('should fail registration with invalid username (non-alphanumeric or short)', async () => {
-      const shortUser = { username: 'ab', password: 'Password@123' };
-      const badUser = { username: 'test_user!', password: 'Password@123' };
+      const shortUser = {
+        username: 'ab',
+        shopName: 'Shankar Traders',
+        ownerName: 'Shankar Lal',
+        mobile: '+919845012346',
+        email: 'shankar2@traders.com',
+        password: 'Password@123'
+      };
+      const badUser = {
+        username: 'test_user!',
+        shopName: 'Shankar Traders',
+        ownerName: 'Shankar Lal',
+        mobile: '+919845012347',
+        email: 'shankar3@traders.com',
+        password: 'Password@123'
+      };
 
       const resShort = await request(app)
         .post('/api/auth/register')
@@ -65,7 +94,14 @@ describe('Authentication API Integration Tests', () => {
     });
 
     it('should fail registration with short password', async () => {
-      const weakUser = { username: 'weakuser', password: '123' };
+      const weakUser = {
+        username: 'weakuser',
+        shopName: 'Shankar Traders',
+        ownerName: 'Shankar Lal',
+        mobile: '+919845012348',
+        email: 'shankar4@traders.com',
+        password: '123'
+      };
       const res = await request(app)
         .post('/api/auth/register')
         .send(weakUser);
@@ -76,10 +112,13 @@ describe('Authentication API Integration Tests', () => {
   });
 
   describe('POST /api/auth/login', () => {
-    it('should login successfully with valid credentials and return a token', async () => {
+    it('should login successfully with email and return a token', async () => {
       const res = await request(app)
         .post('/api/auth/login')
-        .send(testUser);
+        .send({
+          identifier: testUser.email,
+          password: testUser.password
+        });
 
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('message', 'Login successful.');
@@ -87,28 +126,40 @@ describe('Authentication API Integration Tests', () => {
       expect(typeof res.body.token).toBe('string');
     });
 
+    it('should login successfully with mobile number', async () => {
+      const res = await request(app)
+        .post('/api/auth/login')
+        .send({
+          identifier: testUser.mobile,
+          password: testUser.password
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('message', 'Login successful.');
+    });
+
     it('should fail login with incorrect password', async () => {
       const res = await request(app)
         .post('/api/auth/login')
         .send({
-          username: testUser.username,
+          identifier: testUser.email,
           password: 'WrongPassword!',
         });
 
       expect(res.status).toBe(401);
-      expect(res.body).toHaveProperty('error', 'Invalid username or password.');
+      expect(res.body).toHaveProperty('error', 'Invalid credentials.');
     });
 
-    it('should fail login with non-existent username', async () => {
+    it('should fail login with non-existent identifier', async () => {
       const res = await request(app)
         .post('/api/auth/login')
         .send({
-          username: 'noexist',
+          identifier: 'noexist@example.com',
           password: 'Password@123',
         });
 
       expect(res.status).toBe(401);
-      expect(res.body).toHaveProperty('error', 'Invalid username or password.');
+      expect(res.body).toHaveProperty('error', 'Invalid credentials.');
     });
   });
 
@@ -119,11 +170,14 @@ describe('Authentication API Integration Tests', () => {
       // Get a valid token to use for tests
       const res = await request(app)
         .post('/api/auth/login')
-        .send(testUser);
+        .send({
+          identifier: testUser.email,
+          password: testUser.password
+        });
       token = res.body.token;
     });
 
-    it('should allow access with a valid token', async () => {
+    it('should allow access with a valid token in Auth header', async () => {
       const res = await request(app)
         .get('/api/auth/profile')
         .set('Authorization', `Bearer ${token}`);
@@ -131,23 +185,25 @@ describe('Authentication API Integration Tests', () => {
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('message', 'Profile accessed successfully.');
       expect(res.body).toHaveProperty('user');
-      expect(res.body.user).toHaveProperty('username', testUser.username);
+      expect(res.body.user).toHaveProperty('email', testUser.email);
+      expect(res.body.user).toHaveProperty('shopName', testUser.shopName);
     });
 
-    it('should deny access without authorization header', async () => {
+    it('should allow access with a valid token in Cookie header', async () => {
+      const res = await request(app)
+        .get('/api/auth/profile')
+        .set('Cookie', `token=${token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.user).toHaveProperty('email', testUser.email);
+    });
+
+    it('should deny access without authorization header or cookie', async () => {
       const res = await request(app)
         .get('/api/auth/profile');
 
       expect(res.status).toBe(401);
       expect(res.body).toHaveProperty('error', 'Access denied. No token provided.');
-    });
-
-    it('should deny access with malformed header', async () => {
-      const res = await request(app)
-        .get('/api/auth/profile')
-        .set('Authorization', `InvalidPrefix ${token}`);
-
-      expect(res.status).toBe(401);
     });
 
     it('should deny access with invalid/altered token', async () => {

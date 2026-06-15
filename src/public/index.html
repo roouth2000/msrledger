@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LedgerBook - Premium Access Portal</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- REGISTER VIEW -->
+    <div id="register-view" class="card-container">
+      <div class="header-section">
+        <h1>Create your business</h1>
+        <p>Set up your shop in under a minute</p>
+      </div>
+
+      <div class="form-container">
+        <!-- Shop Details Info Card -->
+        <div class="info-card">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M12 18H6v-4h6v4zm9-4v6H3v-6h1.22c.46-1.72 2.01-3 3.88-3H15.9c1.87 0 3.42 1.28 3.88 3H21zm-2 2h-1.1c-.26-.85-1.04-1.5-1.97-1.5H9.07c-.93 0-1.71.65-1.97 1.5H4v2h15v-2zM12 3a9 9 0 0 1 9 9h-2a7 7 0 0 0-14 0H3a9 9 0 0 1 9-9z"/>
+            </svg>
+          </div>
+          <div class="info-text">
+            <h3>Shop details</h3>
+            <p>You can edit these later</p>
+          </div>
+        </div>
+
+        <form id="register-form" novalidate>
+          <div class="alert-message error-message" id="register-error" style="display: none;"></div>
+          <div class="alert-message success-message" id="register-success" style="display: none;"></div>
+
+          <!-- Shop name -->
+          <div class="form-group">
+            <label for="reg-shop-name">Shop name</label>
+            <input type="text" id="reg-shop-name" placeholder="e.g. Shankar Traders" required minlength="3" maxlength="100">
+          </div>
+
+          <!-- Owner name & GSTIN -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-owner-name">Owner name</label>
+              <input type="text" id="reg-owner-name" placeholder="Full name" required minlength="2" maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="reg-gstin">GSTIN</label>
+              <input type="text" id="reg-gstin" placeholder="Optional">
+            </div>
+          </div>
+
+          <!-- Mobile -->
+          <div class="form-group">
+            <label for="reg-mobile">Mobile</label>
+            <div class="input-with-prefix">
+              <span class="prefix-addon">+91</span>
+              <input type="tel" id="reg-mobile" placeholder="98450 12345" required>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="you@business.com" required>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="reg-password" placeholder="Create a strong password" required minlength="8">
+              <button type="button" class="password-toggle" tabindex="-1">
+                <svg class="eye-open-icon" viewBox="0 0 24 24" width="20" height="20">
+                  <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+                <svg class="eye-closed-icon" viewBox="0 0 24 24" width="20" height="20" style="display: none;">
+                  <path fill="currentColor" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.82l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.74-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-4 .7l2.18 2.18c.56-.23 1.17-.36 1.82-.36zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.47-3.3c-.32 0-.64.04-.95.12l1.98 1.98c.56-.56.97-1.28.97-2.1 0-.65-.13-1.26-.36-1.82z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary">Create account</button>
+        </form>
+
+        <div class="footer-link">
+          Already have an account? <a href="#" id="go-to-login">Sign in</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIN VIEW -->
+    <div id="login-view" class="card-container" style="display: none;">
+      <div class="header-section">
+        <div class="logo-wrapper">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+            </svg>
+          </div>
+          <span class="logo-text">LedgerBook</span>
+        </div>
+        <h1>Welcome back</h1>
+        <p>Sign in to manage your billing & accounts</p>
+      </div>
+
+      <div class="form-container">
+        <form id="login-form" novalidate>
+          <div class="alert-message error-message" id="login-error" style="display: none;"></div>
+          <div class="alert-message success-message" id="login-success" style="display: none;"></div>
+
+          <!-- Mobile or email -->
+          <div class="form-group">
+            <label for="log-identifier">Mobile or email</label>
+            <div class="input-with-icon">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18">
+                  <path fill="currentColor" d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14zm-5 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+              </span>
+              <input type="text" id="log-identifier" placeholder="+91 98450 12345 or email" required>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="log-password">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="log-password" placeholder="••••••••" required>
+              <button type="button" class="password-toggle" tabindex="-1">
+                <svg class="eye-open-icon" viewBox="0 0 24 24" width="20" height="20">
+                  <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+                <svg class="eye-closed-icon" viewBox="0 0 24 24" width="20" height="20" style="display: none;">
+                  <path fill="currentColor" d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.82l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.74-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-4 .7l2.18 2.18c.56-.23 1.17-.36 1.82-.36zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.47-3.3c-.32 0-.64.04-.95.12l1.98 1.98c.56-.56.97-1.28.97-2.1 0-.65-.13-1.26-.36-1.82z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="forgot-pwd-wrapper">
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+
+        <div class="divider">
+          <span>or continue with</span>
+        </div>
+
+        <!-- Social logins -->
+        <div class="social-login-grid">
+          <button type="button" class="btn btn-social">
+            <svg class="social-icon" viewBox="0 0 24 24" width="20" height="20">
+              <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114A5.514 5.514 0 0 1 8.5 13a5.514 5.514 0 0 1 5.491-5.514c2.217 0 3.863 1.01 4.547 1.98l3.14-3.14C19.722 4.383 16.972 3 13.991 3 8.473 3 4 7.473 4 13s4.473 10 9.991 10c5.773 0 9.673-4.058 9.673-9.845 0-.663-.06-1.3-.173-1.87H12.24z"/>
+            </svg>
+            Google
+          </button>
+          <button type="button" class="btn btn-social">
+            <svg class="social-icon" viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.72-1.16 1.87-1.01 2.98 1.11.09 2.24-.57 2.94-1.41z"/>
+            </svg>
+            Apple
+          </button>
+        </div>
+
+        <div class="footer-link">
+          New here? <a href="#" id="go-to-register">Create account</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE VIEW -->
+    <div id="profile-view" class="card-container" style="display: none;">
+      <div class="header-section">
+        <div class="logo-wrapper">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+            </svg>
+          </div>
+          <span class="logo-text">LedgerBook</span>
+        </div>
+        <h1>Your Business Dashboard</h1>
+        <p>Billing, metrics, and accounts profile</p>
+      </div>
+
+      <div class="form-container">
+        <div class="profile-details">
+          <div class="profile-avatar">
+            <span id="profile-initials">ST</span>
+          </div>
+
+          <div class="profile-info-grid">
+            <div class="profile-info-item">
+              <div class="info-label">Shop Name</div>
+              <div class="info-value" id="prof-shop-name">-</div>
+            </div>
+            <div class="profile-info-item">
+              <div class="info-label">Owner Name</div>
+              <div class="info-value" id="prof-owner-name">-</div>
+            </div>
+            <div class="profile-info-item">
+              <div class="info-label">Email Address</div>
+              <div class="info-value" id="prof-email">-</div>
+            </div>
+            <div class="profile-info-item">
+              <div class="info-label">Mobile Number</div>
+              <div class="info-value" id="prof-mobile">-</div>
+            </div>
+            <div class="profile-info-item full-width" id="prof-gstin-wrapper">
+              <div class="info-label">GSTIN</div>
+              <div class="info-value" id="prof-gstin">-</div>
+            </div>
+          </div>
+
+          <button id="logout-btn" class="btn btn-secondary">Sign out</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Client Script -->
+  <script src="app.js"></script>
+</body>
+</html>

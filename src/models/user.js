@@ -10,11 +10,52 @@ const User = sequelize.define('User', {
   },
   username: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     unique: true,
     validate: {
       isAlphanumeric: true,
       len: [3, 30],
+    },
+  },
+  shopName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [3, 100],
+    },
+  },
+  ownerName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [2, 100],
+    },
+  },
+  gstin: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isGstin(value) {
+        if (value && !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i.test(value)) {
+          throw new Error('Invalid GSTIN format');
+        }
+      }
+    },
+  },
+  mobile: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      is: /^\+?[0-9]{10,15}$/,
+    },
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
     },
   },
   password: {
