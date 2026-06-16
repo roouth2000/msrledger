@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app');
-const sequelize = require('../src/config/db');
+const sequelize = require('../src/config/database');
 const { User, Voucher, VoucherItem } = require('../src/models');
 const jwt = require('jsonwebtoken');
 const { getJwtSecret } = require('../src/middleware/auth');
@@ -84,6 +84,8 @@ describe('Vouchers API Integration Tests', () => {
       // Verify cascading items in DB
       const dbItems = await VoucherItem.findAll({ where: { voucherId: v.id } });
       expect(dbItems.length).toBe(2);
+      // Sort to make assertions deterministic
+      dbItems.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount));
       expect(parseFloat(dbItems[0].amount)).toBe(7400.00);
       expect(parseFloat(dbItems[1].amount)).toBe(5100.00);
     });

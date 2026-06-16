@@ -1,5 +1,5 @@
 const app = require('./app');
-const sequelize = require('./config/db');
+const sequelize = require('./config/database');
 
 const PORT = process.env.PORT || 3000;
 // Enforce localhost binding to adhere to the security rules

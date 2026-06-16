@@ -1,4 +1,4 @@
-const sequelize = require('../config/db');
+const sequelize = require('../config/database');
 const User = require('./user');
 const Voucher = require('./voucher');
 const VoucherItem = require('./voucherItem');
