@@ -11,8 +11,9 @@ async function startServer() {
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
 
-    // Sync tables (alter is set to false to protect database schema integrity)
-    await sequelize.sync({ alter: false });
+    // Sync tables (alter is set to true in dev to sync new models, false in prod for safety)
+    const isDev = process.env.NODE_ENV !== 'production';
+    await sequelize.sync({ alter: isDev });
     console.log('Database models synced.');
 
     // Launch server on localhost only
